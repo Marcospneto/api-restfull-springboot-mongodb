@@ -1,5 +1,6 @@
 package com.jvm.workshopmongo.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,16 @@ public class PostService {
 	
 	/*Query methods. Aqui sim pode escolher o nome do metodo*/
 	public List<Post> findByTitle(String text) {
-		return repo.findByTitleContainingIgnoreCase(text);
+		return repo.searchTitle(text);
+	}
+	
+	/*Na data maxima tem que considerar ate o final daquele dia ou seja, até as 24h
+	 *Como estou fazendo que na data maxima tenha uma comparação de menor ou igual, tem que fazer a comparação
+	 *menor ou igual até a MEIA NOITE do proximo dia, entao tem que acrescentar mais um dia a nessa data*/
+	public List<Post> fullSearch(String text, Date minDate, Date maxDate){
+		
+		maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000);
+		return repo.fullSearch(text, minDate, maxDate);
 	}
 		
 }
